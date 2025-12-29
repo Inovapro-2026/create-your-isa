@@ -1,0 +1,43 @@
+2025/12/27-11:50:09.047 d60ad Reusing MANIFEST /root/INOVAPRO /whatsapp-isa/tokens/isa-session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/12/27-11:50:09.048 d60ad Recovering log #1005
+2025/12/27-11:50:09.149 d60ad Reusing old log /root/INOVAPRO /whatsapp-isa/tokens/isa-session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/001005.log 
+2025/12/27-11:50:10.749 d60ab Level-0 table #1017: started
+2025/12/27-11:50:10.776 d60ab Level-0 table #1017: 656578 bytes OK
+2025/12/27-11:50:10.778 d60ab Delete type=0 #1005
+2025/12/27-11:50:10.789 d60ab Manual compaction at level-0 from '\x00\xef\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\xf0\x00\x00\x00' @ 0 : 0; will stop at '\x00\xef\x00\x00\x05' @ 2247158 : 1
+2025/12/27-11:50:10.789 d60ab Compacting 1@0 + 1@1 files
+2025/12/27-11:50:10.835 d60ab Generated table #1018@0: 13803 keys, 293636 bytes
+2025/12/27-11:50:10.839 d60ab Generated table #1019@0: 6 keys, 751 bytes
+2025/12/27-11:50:10.839 d60ab Compacted 1@0 + 1@1 files => 294387 bytes
+2025/12/27-11:50:10.841 d60ab compacted to: files[ 0 2 15 0 0 0 0 ]
+2025/12/27-11:50:10.842 d60ab Delete type=2 #1017
+2025/12/27-11:50:10.845 d60ab Manual compaction at level-0 from '\x00\xef\x00\x00\x05' @ 2247158 : 1 .. '\x00\xf0\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/12/27-11:50:10.879 d60ad Compacting 1@1 + 14@2 files
+2025/12/27-11:50:11.059 d60ad Generated table #1020@1: 57503 keys, 2228343 bytes
+2025/12/27-11:50:11.126 d60ad Generated table #1021@1: 2847 keys, 2148852 bytes
+2025/12/27-11:50:11.185 d60ad Generated table #1022@1: 1853 keys, 2135527 bytes
+2025/12/27-11:50:11.289 d60ad Generated table #1023@1: 28740 keys, 2229763 bytes
+2025/12/27-11:50:11.386 d60ad Generated table #1024@1: 9175 keys, 2172733 bytes
+2025/12/27-11:50:11.455 d60ad Generated table #1025@1: 27383 keys, 2158669 bytes
+2025/12/27-11:50:11.549 d60ad Generated table #1026@1: 110864 keys, 2261606 bytes
+2025/12/27-11:50:11.642 d60ad Generated table #1027@1: 111261 keys, 2262506 bytes
+2025/12/27-11:50:11.734 d60ad Generated table #1028@1: 110976 keys, 2263865 bytes
+2025/12/27-11:50:11.752 d60ad Generated table #1029@1: 30734 keys, 628332 bytes
+2025/12/27-11:50:11.752 d60ad Compacted 1@1 + 14@2 files => 20490196 bytes
+2025/12/27-11:50:11.753 d60ad compacted to: files[ 0 1 11 0 0 0 0 ]
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1009
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1013
+2025/12/27-11:50:11.754 d60ad Delete type=2 #964
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1012
+2025/12/27-11:50:11.754 d60ad Delete type=2 #962
+2025/12/27-11:50:11.754 d60ad Delete type=2 #963
+2025/12/27-11:50:11.754 d60ad Delete type=2 #984
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1003
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1010
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1008
+2025/12/27-11:50:11.754 d60ad Delete type=2 #976
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1011
+2025/12/27-11:50:11.754 d60ad Delete type=2 #961
+2025/12/27-11:50:11.754 d60ad Delete type=2 #995
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1018
+2025/12/27-11:50:11.754 d60ad Delete type=2 #1014

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador WhatsApp ISA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        input[type="text"] {
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e1e5e9;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .account-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e1e5e9;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .account-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-connected {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+        
+        .status-qr_ready {
+            background: linear-gradient(135deg, #ffa726 0%, #ffcc02 100%);
+            color: white;
+        }
+        
+        .status-connecting {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+        }
+        
+        .status-error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+        }
+        
+        .qr-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px dashed #dee2e6;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .qr-code {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .qr-placeholder {
+            color: #6c757d;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        .account-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            border-color: #56ab2f;
+        }
+        
+        .alert-error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border-color: #ff6b6b;
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .account-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Gerenciador WhatsApp ISA</h1>
+            <p>Gerencie múltiplas sessões WhatsApp com QR codes individuais</p>
+        </div>
+        
+        <div class="content">
+            <div id="alert-container"></div>
+            
+            <div class="controls">
+                <div class="input-group">
+                    <input type="text" id="client-id" placeholder="ID do cliente (ex: cliente1, cliente2)">
+                    <input type="text" id="client-name" placeholder="Nome do cliente (opcional)">
+                    <button class="btn-primary" onclick="createSession()">➕ Criar Sessão</button>
+                </div>
+                <button class="btn-secondary" onclick="loadSessions()">🔄 Atualizar Lista</button>
+            </div>
+            
+            <div id="sessions-container" class="accounts-grid">
+                <div class="qr-placeholder">
+                    <p>Carregando sessões...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001/api';
+        
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+        
+        async function createSession() {
+            const clientId = document.getElementById('client-id').value.trim();
+            const clientName = document.getElementById('client-name').value.trim() || clientId;
+            
+            if (!clientId) {
+                showAlert('Por favor, insira um ID do cliente', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/sessions/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ client_id: clientId, client_name: clientName })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'created') {
+                    showAlert(`Sessão ${clientId} criada com sucesso!`);
+                    document.getElementById('client-id').value = '';
+                    document.getElementById('client-name').value = '';
+                    loadSessions();
+                } else {
+                    showAlert(data.error || 'Erro ao criar sessão', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+                console.error('Error:', error);
+            }
+        }
+        
+        async function loadSessions() {
+            try {
+                // Get all sessions from the database
+                const response = await fetch(`${API_BASE}/sessions/list`);
+                
+                if (!response.ok) {
+                    // If list endpoint doesn't exist, get individual session status
+                    const testSessions = ['test_client'];
+                    const sessionsWithStatus = await Promise.all(
+                        testSessions.map(async (clientId) => {
+                            try {
+                                const statusResponse = await fetch(`${API_BASE}/sessions/${clientId}/status`);
+                                const statusData = await statusResponse.json();
+                                return {
+                                    client_id: clientId,
+                                    client_name: clientId,
+                                    status: statusData.dbStatus?.status || 'unknown',
+                                    qrCode: statusData.dbStatus?.qr_code || null,
+                                    isConnected: statusData.isConnected || false
+                                };
+                            } catch (error) {
+                                return {
+                                    client_id: clientId,
+                                    client_name: clientId,
+                                    status: 'unknown',
+                                    qrCode: null,
+                                    isConnected: false
+                                };
+                            }
+                        })
+                    );
+                    renderSessions(sessionsWithStatus);
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                if (data.sessions && data.sessions.length > 0) {
+                    // Get detailed status for each session
+                    const sessionsWithStatus = await Promise.all(
+                        data.sessions.map(async (session) => {
+                            try {
+                                const statusResponse = await fetch(`${API_BASE}/sessions/${session.client_id}/status`);
+                                const statusData = await statusResponse.json();
+                                return {
+                                    ...session,
+                                    status: statusData.dbStatus?.status || 'unknown',
+                                    qrCode: statusData.dbStatus?.qr_code || null,
+                                    isConnected: statusData.isConnected || false
+                                };
+                            } catch (error) {
+                                return {
+                                    ...session,
+                                    status: 'unknown',
+                                    qrCode: null,
+                                    isConnected: false
+                                };
+                            }
+                        })
+                    );
+                    renderSessions(sessionsWithStatus);
+                } else {
+                    renderSessions([]);
+                }
+            } catch (error) {
+                showAlert('Erro ao carregar sessões', 'error');
+                console.error('Error:', error);
+                renderSessions([]);
+            }
+        }
+        
+        function renderSessions(sessions) {
+            const container = document.getElementById('sessions-container');
+            
+            if (sessions.length === 0) {
+                container.innerHTML = '<div class="qr-placeholder"><p>Nenhuma sessão criada ainda</p></div>';
+                return;
+            }
+            
+            // Debug QR codes
+            sessions.forEach(session => {
+                if (session.qrCode) {
+                    console.log(`QR Code for ${session.client_id}:`, {
+                        length: session.qrCode.length,
+                        startsWith: session.qrCode.substring(0, 50),
+                        containsDataImage: session.qrCode.startsWith('data:image')
+                    });
+                }
+            });
+            
+            container.innerHTML = sessions.map(session => `
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">${session.client_name || session.client_id}</div>
+                        <div class="status-badge status-${session.status}">${getStatusText(session.status)}</div>
+                    </div>
+                    
+                    <div class="qr-container">
+                        ${session.qrCode ? `
+                            <div style="text-align: center;">
+                                <img src="${session.qrCode}" alt="QR Code WhatsApp" class="qr-code" 
+                                     style="max-width: 200px; max-height: 200px; border: 2px solid #25D366; border-radius: 8px;"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block'; console.error('Erro ao carregar QR code:', this.src.substring(0, 50));"
+                                     onload="console.log('QR code carregado com sucesso para ${session.client_id}');">
+                                <div style="display: none; color: red;">Erro ao carregar QR Code</div>
+                                <p style="margin-top: 10px; color: #6c757d; font-size: 0.9rem;">📱 Escaneie este QR code com WhatsApp</p>
+                                <p style="margin-top: 5px; color: #25D366; font-size: 0.8rem;">Status: ${session.status}</p>
+                            </div>
+                        ` : `
+                            <div class="qr-placeholder">
+                                ${getStatusIcon(session.status)}
+                                <p>${getStatusMessage(session.status)}</p>
+                                ${session.status === 'connecting' || session.status === 'waiting' ? '<div class="loading" style="margin-top: 15px;"></div>' : ''}
+                            </div>
+                        `}
+                    </div>
+                    
+                    <div class="account-actions">
+                        <button class="btn-secondary" onclick="generateQR('${session.client_id}')">📱 Gerar QR Code</button>
+                        <button class="btn-secondary" onclick="checkStatus('${session.client_id}')">📊 Status</button>
+                        <button class="btn-secondary" onclick="resetSession('${session.client_id}')">🔄 Resetar</button>
+                        <button class="btn-danger" onclick="deleteSession('${session.client_id}')">🗑️ Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getStatusText(status) {
+            const statusMap = {
+                'connected': 'Conectado',
+                'qr_ready': 'QR Pronto',
+                'connecting': 'Conectando',
+                'waiting': 'Aguardando',
+                'error': 'Erro',
+                'disconnected': 'Desconectado',
+                'unknown': 'Desconhecido'
+            };
+            return statusMap[status] || status;
+        }
+        
+        function getStatusIcon(status) {
+            const iconMap = {
+                'connected': '✅',
+                'qr_ready': '📱',
+                'connecting': '🔄',
+                'waiting': '⏳',
+                'error': '❌',
+                'disconnected': '📵',
+                'unknown': '❓'
+            };
+            return iconMap[status] || '❓';
+        }
+        
+        function getStatusMessage(status) {
+            const messageMap = {
+                'connected': 'Sessão conectada com sucesso!',
+                'qr_ready': 'QR code pronto para escaneamento!',
+                'connecting': 'Estabelecendo conexão...',
+                'waiting': 'Aguardando conexão...',
+                'error': 'Erro na conexão',
+                'disconnected': 'Sessão desconectada',
+                'unknown': 'Status desconhecido'
+            };
+            return messageMap[status] || 'Status desconhecido';
+        }
+        
+        async function generateQR(clientId) {
+            try {
+                showAlert('Gerando novo QR code...', 'success');
+                
+                // Test current QR code first
+                const statusResponse = await fetch(`${API_BASE}/sessions/${clientId}/status`);
+                const statusData = await statusResponse.json();
+                
+                console.log('Current session status:', statusData);
+                
+                if (statusData.dbStatus && statusData.dbStatus.qr_code) {
+                    console.log('QR code found in session, testing...');
+                    // Test if QR code is valid
+                    const img = new Image();
+                    img.onload = function() {
+                        console.log('QR code image loaded successfully!');
+                        showAlert('QR code já está disponível!', 'success');
+                    };
+                    img.onerror = function() {
+                        console.log('QR code image failed to load, generating new one...');
+                        resetAndGenerate();
+                    };
+                    img.src = statusData.dbStatus.qr_code;
+                } else {
+                    console.log('No QR code found, generating new one...');
+                    resetAndGenerate();
+                }
+                
+                function resetAndGenerate() {
+                    // Reset and recreate session to generate new QR
+                    resetSession(clientId).then(() => {
+                        // Wait a bit and then reload
+                        setTimeout(() => {
+                            loadSessions();
+                        }, 3000);
+                    });
+                }
+                
+            } catch (error) {
+                showAlert('Erro ao gerar QR code', 'error');
+                console.error('Error:', error);
+            }
+        }
+        
+        async function checkStatus(clientId) {
+            try {
+                const response = await fetch(`${API_BASE}/sessions/${clientId}/status`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const status = data.dbStatus?.status || 'unknown';
+                    const isConnected = data.isConnected || false;
+                    showAlert(`Status da sessão ${clientId}: ${getStatusText(status)} ${isConnected ? '(Conectado)' : '(Desconectado)'}`);
+                } else {
+                    showAlert('Erro ao verificar status', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+            }
+        }
+        
+        async function resetSession(clientId) {
+            if (!confirm(`Tem certeza que deseja resetar a sessão ${clientId}?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/sessions/${clientId}/reset`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    showAlert(`Sessão ${clientId} resetada com sucesso`);
+                    setTimeout(() => loadSessions(), 1000);
+                } else {
+                    showAlert(data.error || 'Erro ao resetar sessão', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+            }
+        }
+        
+        async function deleteSession(clientId) {
+            if (!confirm(`Tem certeza que deseja excluir a sessão ${clientId}?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/sessions/${clientId}/reset`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    showAlert(`Sessão ${clientId} excluída com sucesso`);
+                    loadSessions();
+                } else {
+                    showAlert(data.error || 'Erro ao excluir sessão', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+            }
+        }
+        
+        // Atualizar lista a cada 10 segundos
+        setInterval(loadSessions, 10000);
+        
+        // Carregar sessões ao iniciar
+        loadSessions();
+    </script>
+</body>
+</html>

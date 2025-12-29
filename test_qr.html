@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste QR Code WhatsApp</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .qr-container { text-align: center; margin: 20px; }
+        .qr-code { max-width: 300px; border: 2px solid #ccc; padding: 10px; }
+        .status { margin: 20px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de QR Code WhatsApp</h1>
+    
+    <div id="status" class="status info">Carregando QR Code...</div>
+    
+    <div class="qr-container">
+        <img id="qr-image" class="qr-code" style="display: none;" alt="QR Code WhatsApp">
+    </div>
+    
+    <div id="debug-info" style="margin-top: 20px; font-family: monospace; background: #f8f9fa; padding: 15px; border-radius: 5px;">
+        <h3>Informações do QR Code:</h3>
+        <div id="debug-content">Aguardando dados...</div>
+    </div>
+
+    <script>
+        async function testQRCode() {
+            try {
+                // Buscar o QR code da sessão
+                const response = await fetch('http://localhost:3001/api/sessions/test_qr_debug/status');
+                const data = await response.json();
+                
+                const statusDiv = document.getElementById('status');
+                const qrImage = document.getElementById('qr-image');
+                const debugContent = document.getElementById('debug-content');
+                
+                if (data.dbStatus && data.dbStatus.qr_code) {
+                    const qrCode = data.dbStatus.qr_code;
+                    
+                    // Debug information
+                    const debugInfo = {
+                        'Status da Sessão': data.dbStatus.status,
+                        'Tamanho do QR Code': qrCode.length + ' caracteres',
+                        'Formato': qrCode.substring(0, 30) + '...',
+                        'É Base64 Válido': qrCode.startsWith('data:image/png;base64,') ? '✅ Sim' : '❌ Não',
+                        'Sessão Conectada': data.isConnected ? '✅ Sim' : '❌ Não',
+                        'Última Atividade': data.dbStatus.last_activity
+                    };
+                    
+                    let debugHTML = '';
+                    for (const [key, value] of Object.entries(debugInfo)) {
+                        debugHTML += `<strong>${key}:</strong> ${value}<br>`;
+                    }
+                    debugContent.innerHTML = debugHTML;
+                    
+                    // Display QR code
+                    qrImage.src = qrCode;
+                    qrImage.style.display = 'block';
+                    
+                    if (data.dbStatus.status === 'qr_ready') {
+                        statusDiv.className = 'status success';
+                        statusDiv.textContent = '✅ QR Code gerado com sucesso! Escaneie com seu WhatsApp.';
+                    } else {
+                        statusDiv.className = 'status info';
+                        statusDiv.textContent = `ℹ️ Status da sessão: ${data.dbStatus.status}`;
+                    }
+                    
+                    // Auto-refresh every 10 seconds
+                    setTimeout(testQRCode, 10000);
+                    
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ QR Code não encontrado. Crie uma sessão primeiro.';
+                    debugContent.innerHTML = '<strong>Erro:</strong> Nenhum QR code disponível';
+                }
+                
+            } catch (error) {
+                document.getElementById('status').className = 'status error';
+                document.getElementById('status').textContent = '❌ Erro ao buscar QR Code: ' + error.message;
+                document.getElementById('debug-content').innerHTML = '<strong>Erro:</strong> ' + error.message;
+            }
+        }
+        
+        // Test on page load
+        testQRCode();
+        
+        // Add manual refresh button
+        const refreshButton = document.createElement('button');
+        refreshButton.textContent = '🔄 Atualizar QR Code';
+        refreshButton.style.cssText = 'margin: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer;';
+        refreshButton.onclick = testQRCode;
+        document.body.appendChild(refreshButton);
+    </script>
+</body>
+</html>

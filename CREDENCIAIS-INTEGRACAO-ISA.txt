@@ -1,0 +1,245 @@
+🚀 CREDENCIAIS DE INTEGRAÇÃO - WHATSAPP ISA
+===========================================
+
+📋 INFORMAÇÕES DA VPS ATUAL (WhatsApp ISA)
+==========================================
+
+🔧 DADOS DO SERVIDOR REAL:
+-------------------------
+IP da VPS: 148.230.76.60
+IP IPv6: 2a02:4780:14:68db::1
+Porta SSH: 22 (padrão)
+Usuário SSH: root
+Data/Hora Atual: Sat Dec 27 11:41:31 UTC 2025
+Kernel: 6.17.0-8-generic
+
+📁 LOCALIZAÇÃO DO PROJETO:
+-------------------------
+Caminho completo: /root/INOVAPRO\ /whatsapp-isa/
+Comando para acessar: cd "/root/INOVAPRO\ /whatsapp-isa/"
+
+🔑 CHAVES DE API:
+----------------
+API Key: cd04af4daa23f9b087a824a5df72c8220ffd9449c5d6b7d63676cc131c6e099f
+Session Name: isa-session
+Porta API: 3001 (ativa - processo 796333/node)
+
+🌐 ENDPOINTS DA API:
+==================
+
+📱 WHATSAPP STATUS:
+------------------
+URL: http://148.230.76.60:3001/api/whatsapp/status
+Método: GET
+Headers: Authorization: Bearer cd04af4daa23f9b087a824a5df72c8220ffd9449c5d6b7d63676cc131c6e099f
+
+📨 ENVIAR MENSAGEM:
+-----------------
+URL: http://148.230.76.60:3001/api/whatsapp/send-message
+Método: POST
+Headers: 
+  - Content-Type: application/json
+  - Authorization: Bearer cd04af4daa23f9b087a824a5df72c8220ffd9449c5d6b7d63676cc131c6e099f
+
+Body:
+{
+  "number": "5511999999999",
+  "message": "Sua mensagem aqui",
+  "session": "isa-session"
+}
+
+📱 OBTER QR CODE:
+----------------
+URL: http://148.230.76.60:3001/api/whatsapp/qr
+Método: GET
+Headers: Authorization: Bearer cd04af4daa23f9b087a824a5df72c8220ffd9449c5d6b7d63676cc131c6e099f
+
+🔧 CONFIGURAÇÕES DO SERVIDOR:
+=============================
+
+📋 DEPENDÊNCIAS INSTALADAS:
+---------------------------
+- Node.js: Versão compatível com WPPConnect
+- PM2: Gerenciador de processos
+- Nginx: Proxy Reverso
+- Chromium: Navegador para automação
+- WPPConnect: Biblioteca WhatsApp Web
+- Express: Framework web para API
+
+🚀 COMANDOS IMPORTANTES:
+=======================
+
+📁 NAVEGAÇÃO:
+------------
+cd "/root/INOVAPRO\ /whatsapp-isa/"
+
+🔨 BUILD DO PROJETO:
+------------------
+npm install express cors axios dotenv
+npm run build
+
+📱 INICIAR SERVIÇO:
+-----------------
+pm2 start ecosystem.config.js
+
+📊 VERIFICAR STATUS:
+------------------
+pm2 status
+pm2 logs whatsapp-isa-api
+pm2 monit
+
+🔄 REINICIAR SERVIÇO:
+-------------------
+pm2 restart whatsapp-isa-api
+
+🛑 PARAR SERVIÇO:
+----------------
+pm2 stop whatsapp-isa-api
+
+🔧 ARQUIVOS DE CONFIGURAÇÃO:
+===========================
+
+📄 ARQUIVO PRINCIPAL:
+-------------------
+/root/INOVAPRO\ /whatsapp-isa/src/api/index.js
+
+📄 CONFIGURAÇÃO PM2:
+------------------
+/root/INOVAPRO\ /whatsapp-isa/ecosystem.config.js
+
+📄 VARIÁVEIS DE AMBIENTE:
+-----------------------
+/root/INOVAPRO\ /whatsapp-isa/.env
+
+📄 ARQUIVO ORIGINAL BOT:
+----------------------
+/root/INOVAPRO\ /whatsapp-isa/start-bot.js
+
+🔐 SEGURANÇA:
+=============
+
+🔑 CHAVE API GERADA:
+-------------------
+cd04af4daa23f9b087a824a5df72c8220ffd9449c5d6b7d63676cc131c6e099f
+
+🔒 CONFIGURAR FIREWALL:
+---------------------
+# Liberar porta 3001 apenas para IP do painel
+ufw allow from [IP_DO_PAINEL] to any port 3001
+
+🌐 CONFIGURAR NGINX:
+------------------
+Arquivo: /etc/nginx/sites-available/whatsapp-isa
+Comando: nginx -t && systemctl reload nginx
+
+📊 MONITORAMENTO:
+=================
+
+📈 VERIFICAR LOGS:
+----------------
+tail -f /root/.pm2/logs/whatsapp-isa-api-out.log
+tail -f /root/.pm2/logs/whatsapp-isa-api-error.log
+
+🔍 VERIFICAR PROCESSOS:
+---------------------
+ps aux | grep node
+netstat -tulpn | grep 3001
+
+📋 TESTES DE INTEGRAÇÃO:
+=======================
+
+✅ TESTAR CONEXÃO:
+-----------------
+curl -X GET http://148.230.76.60:3001/api/whatsapp/status
+
+✅ TESTAR ENVIO:
+--------------
+curl -X POST http://148.230.76.60:3001/api/whatsapp/send-message \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer cd04af4daa23f9b087a824a5df72c8220ffd9449c5d6b7d63676cc131c6e099f" \\
+  -d '{"number": "5511999999999", "message": "Teste de integração ISA"}'
+
+🔧 INFORMAÇÕES DO PAINEL ISA:
+=============================
+
+📝 WEBHOOK URL (para VPS WhatsApp):
+-----------------------------------
+URL: http://[IP_DO_PAINEL]/api/whatsapp/webhook
+Método: POST
+
+🔄 DADOS ENVIADOS PELO WEBHOOK:
+-------------------------------
+{
+  "type": "message_received",
+  "data": {
+    "from": "5511999999999@c.us",
+    "body": "Mensagem do usuário",
+    "timestamp": 1234567890,
+    "isGroupMsg": false
+  }
+}
+
+{
+  "type": "status",
+  "status": "connected|disconnected|error"
+}
+
+⚠️  IMPORTANTE:
+==============
+
+🔴 SUBSTITUIR VALORES:
+--------------------
+- [IP_DO_PAINEL] → IP real da VPS do Painel ISA
+- Gerar nova chave API se necessário: openssl rand -hex 32
+
+🔐 SEGURANÇA OBRIGATÓRIA:
+-----------------------
+1. Esta chave API é única e segura
+2. Configurar firewall assim que possível
+3. Usar HTTPS em produção
+4. Implementar rate limiting
+5. Validar IPs de origem
+
+📞 SUPORTE:
+==========
+
+🆘 COMANDOS DE EMERGÊNCIA:
+------------------------
+# Verificar se o serviço está rodando
+systemctl status pm2-root
+
+# Verificar portas em uso
+netstat -tulpn | grep 3001
+
+# Verificar erros recentes
+journalctl -u pm2-root -f
+
+# Reiniciar tudo
+pm2 restart all
+
+📋 CHECKLIST DE INSTALAÇÃO:
+===========================
+
+☐ 1. Acessar VPS via SSH (IP: 148.230.76.60)
+☐ 2. Instalar dependências: npm install express cors axios dotenv
+☐ 3. Criar arquivos de API conforme guia
+☐ 4. Configurar .env com credenciais
+☐ 5. Build do projeto: npm run build
+☐ 6. Iniciar com PM2: pm2 start ecosystem.config.js
+☐ 7. Configurar Nginx
+☐ 8. Testar endpoints
+☐ 9. Configurar firewall
+☐ 10. Integrar com Painel ISA
+
+🎯 AO FINALIZAR:
+===============
+✅ API Key gerada e segura: cd04af4daa23f9b087a824a5df72c8220ffd9449c5d6b7d63676cc131c6e099f
+✅ IP da VPS confirmado: 148.230.76.60
+✅ Porta 3001 ativa e escutando
+✅ Testes de integração prontos
+✅ Documentação completa
+
+📅 Data de criação: 27/12/2024
+🔄 Última atualização: 27/12/2024 11:41:31 UTC
+👤 Responsável: [INSIRA_NOME_DO_RESPONSÁVEL]
+🖥️ Sistema: Linux 6.17.0-8-generic

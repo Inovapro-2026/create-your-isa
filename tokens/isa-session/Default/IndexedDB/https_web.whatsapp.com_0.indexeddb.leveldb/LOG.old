@@ -1,0 +1,30 @@
+2025/12/27-07:02:41.047 7c2cd Reusing MANIFEST /root/INOVAPRO /whatsapp-isa/tokens/isa-session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/12/27-07:02:41.052 7c2cd Recovering log #996
+2025/12/27-07:02:41.143 7c2cd Reusing old log /root/INOVAPRO /whatsapp-isa/tokens/isa-session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000996.log 
+2025/12/27-07:02:42.522 7c2cd Level-0 table #1006: started
+2025/12/27-07:02:42.600 7c2cd Level-0 table #1006: 705037 bytes OK
+2025/12/27-07:02:42.602 7c2cd Delete type=0 #996
+2025/12/27-07:02:42.620 7c2cd Manual compaction at level-0 from '\x00\xee\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\xef\x00\x00\x00' @ 0 : 0; will stop at '\x00\xee\x00\x00\x05' @ 2221851 : 1
+2025/12/27-07:02:42.621 7c2cd Compacting 1@0 + 1@1 files
+2025/12/27-07:02:42.637 7c2cd Generated table #1007@0: 13343 keys, 223954 bytes
+2025/12/27-07:02:42.640 7c2cd Generated table #1008@0: 6 keys, 751 bytes
+2025/12/27-07:02:42.640 7c2cd Compacted 1@0 + 1@1 files => 224705 bytes
+2025/12/27-07:02:42.644 7c2cd compacted to: files[ 0 2 14 0 0 0 0 ]
+2025/12/27-07:02:42.645 7c2cd Manual compaction at level-0 from '\x00\xee\x00\x00\x05' @ 2221851 : 1 .. '\x00\xef\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/12/27-07:02:42.646 7c2cd Compacting 1@1 + 5@2 files
+2025/12/27-07:02:42.809 7c2cd Generated table #1009@1: 55323 keys, 2224821 bytes
+2025/12/27-07:02:42.958 7c2cd Generated table #1010@1: 2617 keys, 2147983 bytes
+2025/12/27-07:02:43.051 7c2cd Generated table #1011@1: 1853 keys, 2136328 bytes
+2025/12/27-07:02:43.164 7c2cd Generated table #1012@1: 29240 keys, 2232135 bytes
+2025/12/27-07:02:43.317 7c2cd Generated table #1013@1: 8535 keys, 2172101 bytes
+2025/12/27-07:02:43.321 7c2cd Generated table #1014@1: 60 keys, 58388 bytes
+2025/12/27-07:02:43.321 7c2cd Compacted 1@1 + 5@2 files => 10971756 bytes
+2025/12/27-07:02:43.323 7c2cd compacted to: files[ 0 1 15 0 0 0 0 ]
+2025/12/27-07:02:43.323 7c2cd Delete type=2 #1001
+2025/12/27-07:02:43.323 7c2cd Delete type=2 #1007
+2025/12/27-07:02:43.323 7c2cd Delete type=2 #989
+2025/12/27-07:02:43.323 7c2cd Delete type=2 #1000
+2025/12/27-07:02:43.323 7c2cd Delete type=2 #1006
+2025/12/27-07:02:43.323 7c2cd Delete type=2 #999
+2025/12/27-07:02:43.323 7c2cd Delete type=2 #1002
+2025/12/27-07:02:43.323 7c2cd Delete type=2 #998

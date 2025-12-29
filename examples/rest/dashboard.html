@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Contas WhatsApp ISA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        input[type="text"] {
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e1e5e9;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .account-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e1e5e9;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .account-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-connected {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+        
+        .status-waiting {
+            background: linear-gradient(135deg, #ffa726 0%, #ffcc02 100%);
+            color: white;
+        }
+        
+        .status-error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+        }
+        
+        .status-starting {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+        }
+        
+        .qr-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .qr-code {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .qr-placeholder {
+            padding: 40px 20px;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .account-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .message-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5e9;
+        }
+        
+        .message-form h4 {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            border-color: #56ab2f;
+        }
+        
+        .alert-error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border-color: #ff6b6b;
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .account-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Gerenciador de Contas WhatsApp ISA</h1>
+            <p>Gerencie múltiplas contas WhatsApp com QR codes individuais</p>
+        </div>
+        
+        <div class="content">
+            <div id="alert-container"></div>
+            
+            <div class="controls">
+                <div class="input-group">
+                    <input type="text" id="account-name" placeholder="Nome da conta (ex: isa-001, isa-002)">
+                    <button class="btn-primary" onclick="createAccount()">➕ Criar Conta</button>
+                </div>
+                <button class="btn-secondary" onclick="loadAccounts()">🔄 Atualizar Lista</button>
+            </div>
+            
+            <div id="accounts-container" class="accounts-grid">
+                <div class="qr-placeholder">
+                    <p>Carregando contas...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+        
+        async function createAccount() {
+            const accountName = document.getElementById('account-name').value.trim();
+            
+            if (!accountName) {
+                showAlert('Por favor, insira um nome para a conta', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/account/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ accountName })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status) {
+                    showAlert(`Conta ${accountName} criada com sucesso!`);
+                    document.getElementById('account-name').value = '';
+                    loadAccounts();
+                } else {
+                    showAlert(data.message || 'Erro ao criar conta', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+                console.error('Error:', error);
+            }
+        }
+        
+        async function loadAccounts() {
+            try {
+                const response = await fetch(`${API_BASE}/accounts`);
+                const data = await response.json();
+                
+                if (data.status) {
+                    renderAccounts(data.data);
+                } else {
+                    showAlert('Erro ao carregar contas', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+                console.error('Error:', error);
+            }
+        }
+        
+        function renderAccounts(accounts) {
+            const container = document.getElementById('accounts-container');
+            
+            if (accounts.length === 0) {
+                container.innerHTML = '<div class="qr-placeholder"><p>Nenhuma conta criada ainda</p></div>';
+                return;
+            }
+            
+            container.innerHTML = accounts.map(account => `
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">${account.name}</div>
+                        <div class="status-badge status-${account.status}">${getStatusText(account.status)}</div>
+                    </div>
+                    
+                    <div class="qr-container">
+                        ${account.hasQR ? `
+                            <img src="${account.qrCode}" alt="QR Code" class="qr-code">
+                            <p style="margin-top: 10px; color: #6c757d; font-size: 0.9rem;">Escaneie o QR code com WhatsApp</p>
+                        ` : `
+                            <div class="qr-placeholder">
+                                ${getStatusIcon(account.status)}
+                                <p>${getStatusMessage(account.status)}</p>
+                            </div>
+                        `}
+                    </div>
+                    
+                    <div class="account-actions">
+                        <button class="btn-secondary" onclick="refreshQR('${account.name}')">📱 Atualizar QR</button>
+                        <button class="btn-secondary" onclick="checkStatus('${account.name}')">📊 Status</button>
+                        <button class="btn-danger" onclick="deleteAccount('${account.name}')">🗑️ Excluir</button>
+                    </div>
+                    
+                    <div class="message-form">
+                        <h4>Enviar Mensagem</h4>
+                        <div class="form-group">
+                            <label>Número (com DDD):</label>
+                            <input type="text" id="tel-${account.name}" placeholder="55999999999">
+                        </div>
+                        <div class="form-group">
+                            <label>Mensagem:</label>
+                            <textarea id="msg-${account.name}" placeholder="Digite sua mensagem..."></textarea>
+                        </div>
+                        <button class="btn-primary" onclick="sendMessage('${account.name}')">📤 Enviar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getStatusText(status) {
+            const statusMap = {
+                'connected': 'Conectado',
+                'waiting_qr': 'Aguardando QR',
+                'starting': 'Iniciando',
+                'error': 'Erro',
+                'disconnected': 'Desconectado'
+            };
+            return statusMap[status] || status;
+        }
+        
+        function getStatusIcon(status) {
+            const iconMap = {
+                'connected': '✅',
+                'waiting_qr': '⏳',
+                'starting': '🔄',
+                'error': '❌',
+                'disconnected': '📵'
+            };
+            return iconMap[status] || '❓';
+        }
+        
+        function getStatusMessage(status) {
+            const messageMap = {
+                'connected': 'Conta conectada com sucesso!',
+                'waiting_qr': 'Aguardando geração do QR code...',
+                'starting': 'Iniciando conexão...',
+                'error': 'Erro na conexão',
+                'disconnected': 'Conta desconectada'
+            };
+            return messageMap[status] || 'Status desconhecido';
+        }
+        
+        async function refreshQR(accountName) {
+            // Recarrega a lista para atualizar o QR
+            await loadAccounts();
+            showAlert(`QR code da conta ${accountName} atualizado`);
+        }
+        
+        async function checkStatus(accountName) {
+            try {
+                const response = await fetch(`${API_BASE}/account/${accountName}/status`);
+                const data = await response.json();
+                
+                if (data.status) {
+                    showAlert(`Status da conta ${accountName}: ${data.connectionStatus || data.instanceStatus}`);
+                } else {
+                    showAlert('Erro ao verificar status', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+            }
+        }
+        
+        async function deleteAccount(accountName) {
+            if (!confirm(`Tem certeza que deseja excluir a conta ${accountName}?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/account/${accountName}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.status) {
+                    showAlert(`Conta ${accountName} excluída com sucesso`);
+                    loadAccounts();
+                } else {
+                    showAlert(data.message || 'Erro ao excluir conta', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+            }
+        }
+        
+        async function sendMessage(accountName) {
+            const telnumber = document.getElementById(`tel-${accountName}`).value.trim();
+            const message = document.getElementById(`msg-${accountName}`).value.trim();
+            
+            if (!telnumber || !message) {
+                showAlert('Por favor, preencha o número e a mensagem', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/account/${accountName}/sendmessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ telnumber, message })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status) {
+                    showAlert('Mensagem enviada com sucesso!');
+                    document.getElementById(`msg-${accountName}`).value = '';
+                } else {
+                    showAlert(data.message || 'Erro ao enviar mensagem', 'error');
+                }
+            } catch (error) {
+                showAlert('Erro ao conectar com o servidor', 'error');
+            }
+        }
+        
+        // Atualizar lista a cada 10 segundos
+        setInterval(loadAccounts, 10000);
+        
+        // Carregar contas ao iniciar
+        loadAccounts();
+    </script>
+</body>
+</html>
